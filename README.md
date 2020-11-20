@@ -1,6 +1,6 @@
 ## Getting Started
 
-This branch demonstrates the `XML` configuration for this project.
+This branch demonstrates the `@Annotation` configuration for this project.
 
 ## Folder Structure
 
