@@ -2,6 +2,12 @@
 
 This branch demonstrates the configuration for this project without using `XML` or `@Annotations`.
 
+
+This project has one four different branches:
+1) **master**
+2) **standard** - this branch shows the problems with the standard implementation of programs without using `XML` or `Annotations`
+3) **xml** - This branch shows the working of spring using `XML` file.
+4) **annotation** - This branch shows the working of spring using annotations
 ## Folder Structure
 
 The workspace contains two folders by default, where:
@@ -35,14 +41,16 @@ The workspace contains two folders by default, where:
 ## Why we shouldn't create JdbcTemplate manually?
 - The `InsertStudent` class has an insert method which helps us to insert a student object to our student table.
     ```java 
-    insert(Student student)
+    insert(Student student){
+        //To check implementation go to InsertStudent class, link given above
+    }
     ``` 
 
 - Imagine, We have **multiple DAO**'s like our `InsertStudent`. For example `BookDAO`, `TeacherDAO` etc. Now imagine, we need to insert a Book object record to the book table or Teacher object to teacher table.
 
 - So, In this scenario, we need the `JdbcTemplate` object again, inside our `BookDAO` or `TeacherDAO` so that we can call the `update()` over it, which will perform operations for us.
 
-- So, we may need the `JdbcTemplate` object in multiple DAO classes and **we don't want to create a new JdbcTemplate object in every DAO class.**
+- So, we may need the `JdbcTemplate` object in multiple DAO classes and we don't want to create a new JdbcTemplate object in every DAO class.
 
 
 **We shouldn't be creating objects and setting dependencies. Spring will do these things for us.**
