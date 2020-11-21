@@ -11,7 +11,7 @@
     <context:component-scan base-package="com.student"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <constructor-arg name="url" value="jdbc:mysql://127.0.0.1:3306/spring_jdbc_school"/>
+        <constructor-arg name="url" value="jdbc:mysql://127.0.0.1:3306/spring_jdbc_school?useSSL=false"/>
         <constructor-arg name="username" value="root"/>
         <constructor-arg name="password" value="root1234"/>
     </bean>
