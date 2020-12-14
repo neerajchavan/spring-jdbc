@@ -1,12 +1,10 @@
-## Getting Started
-
-This branch demonstrates the `@Annotation` configuration for this project.
-
 ### This project has one four different branches:
 1) **master**
 2) **standard** - this branch shows the problems with the standard implementation of programs without using `XML` or `Annotations`
 3) **xml** - This branch shows the working of spring using `XML` file.
 4) **annotation** - This branch shows the working of spring using annotations
+
+## [Spring JDBC - Overview](https://www.simplilearn.com/spring-jdbc-hibernate-tutorial)
 
 ## Folder Structure
 
