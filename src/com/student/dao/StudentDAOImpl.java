@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.student.pojo.Student;
+import com.student.rowmapper.StudentRowMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -66,5 +67,14 @@ public class StudentDAOImpl implements StudentDAO {
         System.out.println("No of rows deleted : " + noOfRowsDeleted);
         return noOfRowsDeleted;
     }
+
+    @Override
+    public List<Student> getAllStudents() {
+        String sql = "select * from Student";
+        List<Student> studentList = jdbcTemplate.query(sql, new StudentRowMapper());
+        return studentList;
+    }
+
+    
 
 }

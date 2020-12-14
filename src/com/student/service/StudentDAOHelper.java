@@ -38,4 +38,10 @@ public class StudentDAOHelper {
     
     }
 
+    public void printStudents(List<Student> students){
+        for(Student tempStudent : students){
+            System.out.println(tempStudent);
+        }
+    }
+
 }
