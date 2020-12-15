@@ -1,11 +1,17 @@
 package com.student.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.student.pojo.Student;
+import com.student.resultsetextractor.StudentNameAddressMapper;
+import com.student.resultsetextractor.StudentResultSetExtractor;
+import com.student.rowmapper.StudentRowMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -66,5 +72,46 @@ public class StudentDAOImpl implements StudentDAO {
         System.out.println("No of rows deleted : " + noOfRowsDeleted);
         return noOfRowsDeleted;
     }
+
+    // This method returns all the students from DB
+    @Override
+    public List<Student> getAllStudents() {
+        String sql = "select * from Student";
+        List<Student> studentList = jdbcTemplate.query(sql, new StudentRowMapper());
+        return studentList;
+    }
+
+    // This method finds students by their roll number
+    @Override
+    public Student findStudentByRollNo(int rollNumber) {
+        String sql = "select * from Student where roll_no=?";
+        Student student = jdbcTemplate.queryForObject(sql, new StudentRowMapper(), rollNumber);
+        return student;
+    }
+
+    @Override
+    public List<Student> getAllStudentsBeanPropertyRowMapper() {
+        System.out.println("Inside BeanPropertyRowMapper : ");
+        String sql = "select roll_no as rollNo, student_name as name, student_address as address FROM Student";
+
+        List<Student> studentList = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Student>(Student.class));
+        return studentList;
+    }
+
+    @Override
+    public List<Student> findStudentsByName(String name) {
+        String sql = "select * from Student where student_name = ?";
+        List<Student> studentList = jdbcTemplate.query(sql, new StudentResultSetExtractor(), name);
+        return studentList;
+    }
+
+    @Override
+    public Map<String, List<String>> studentNameAddressMapping() {
+        String sql = "select * from Student";
+        Map<String, List<String>> map = jdbcTemplate.query(sql, new StudentNameAddressMapper());
+        return map;
+    }
+
+    
 
 }
