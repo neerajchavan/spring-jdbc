@@ -86,6 +86,7 @@ StudentDAOImpl code - [Click here](https://github.com/neerajchavan/spring-jdbc/b
    ```
 
 5) Our next added functionality is `insertStudnets()`. Here we are doing a batch insert of multiple student records. In `StudentDAOHelper` class we are creating three different Student objects and setting values for them. On `StudentDAOHelper` class we have used **@Service** annotation.
+This object array must have one entry for each placeholder in the SQL statement, and they must be in the same order as they are defined in the SQL statement. We will see more examples of batch operations later.
 
     ```java
       // This method inserts student data in batch
@@ -102,6 +103,19 @@ StudentDAOImpl code - [Click here](https://github.com/neerajchavan/spring-jdbc/b
         jdbcTemplate.batchUpdate(sql, sqlArgs);
         System.out.println("Batch update done!");
 
+    }
+    ```
+6) Updating student address by roll no :
+   
+    ```Java
+    @Override
+    public int updateStudent(int rollNo, String address) {
+        String sql = "update Student set student_address = ? where roll_no = ?";
+        Object[] args = { address, rollNo };
+        int i = jdbcTemplate.update(sql, args);
+
+        System.out.println("No of records updated : " + i);
+        return i;
     }
     ```
 
@@ -233,6 +247,53 @@ public class StudentResultSetExtractor implements ResultSetExtractor<List<Studen
 ```
 
 **Further explaination with example - [click here](https://www.tutorialspoint.com/springjdbc/springjdbc_resultsetextractor.htm)**
+
+# Batch Operations
+
+  `BatchPreparedStatementSetter` - [click here](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jdbc/core/BatchPreparedStatementSetter.html) 
+
+  1. **Batch Update**
+  ```Java
+  @Override
+    public int batchUpdateStudents(List<Student> studentsList) {
+        String sql = "update Student set student_address = ? where roll_no = ?";
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+
+            // In this method we set args for PreparedStatement
+			@Override
+			public void setValues(PreparedStatement ps, int index) throws SQLException {
+                ps.setString(1, studentsList.get(index).getAddress());
+                ps.setInt(2, studentsList.get(index).getRollNo());
+			}
+
+            /* In this method we define how many times the query will get executed...
+            i.e How many times setValues() will get called...
+            This method is executed first.*/
+			@Override
+			public int getBatchSize() {
+				System.out.println("inside getBatchSize().." + " setValues() will run " +studentsList.size() + " times.");
+				return studentsList.size();
+			}
+            
+        });
+        return studentsList.size();
+    }
+  ```
+
+  **Spring documentation on batch operations** - 
+[click here](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#jdbc-batch-classic)
+
+**More examples of batch operations** - [click here](https://mkyong.com/spring/spring-jdbctemplate-batchupdate-example/)
+
+# @Transactional
+
+We will see more about **@Transactional** in Spring AOP. Checkout the example 4 of [this](https://mkyong.com/spring/spring-jdbctemplate-batchupdate-example/) tutorial to get the basic idea.
+Before using **@Transactional** it needs to be enabled.
+
+
+
+
+
 
 
 

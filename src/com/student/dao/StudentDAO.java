@@ -23,4 +23,8 @@ public interface StudentDAO {
     List<Student> findStudentsByName(String name);
 
     Map<String, List<String> > studentNameAddressMapping();
+
+    int updateStudent(int rollNo, String address);
+
+    int batchUpdateStudents(List<Student> studentsList);
 }

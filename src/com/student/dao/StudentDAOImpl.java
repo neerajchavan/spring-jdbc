@@ -1,5 +1,7 @@
 package com.student.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +13,7 @@ import com.student.resultsetextractor.StudentResultSetExtractor;
 import com.student.rowmapper.StudentRowMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -110,6 +113,40 @@ public class StudentDAOImpl implements StudentDAO {
         String sql = "select * from Student";
         Map<String, List<String>> map = jdbcTemplate.query(sql, new StudentNameAddressMapper());
         return map;
+    }
+
+    @Override
+    public int updateStudent(int rollNo, String address) {
+        String sql = "update Student set student_address = ? where roll_no = ?";
+        Object[] args = { address, rollNo };
+        int i = jdbcTemplate.update(sql, args);
+
+        System.out.println("No of records updated : " + i);
+        return i;
+    }
+
+    @Override
+    public int batchUpdateStudents(List<Student> studentsList) {
+        String sql = "update Student set student_address = ? where roll_no = ?";
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+
+            // In this method we set args for PreparedStatement
+			@Override
+			public void setValues(PreparedStatement ps, int index) throws SQLException {
+                ps.setString(1, studentsList.get(index).getAddress());
+                ps.setInt(2, studentsList.get(index).getRollNo());
+			}
+
+            // In this method we define how many times the query will get executed...
+            // i.e How many times setValues() will get called...
+			@Override
+			public int getBatchSize() {
+				System.out.println("inside getBatchSize().." + " setValues() will run " +studentsList.size() + " times.");
+				return studentsList.size();
+			}
+            
+        });
+        return studentsList.size();
     }
 
     
