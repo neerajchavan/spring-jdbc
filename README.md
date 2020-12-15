@@ -116,9 +116,7 @@ StudentDAOImpl code - [Click here](https://github.com/neerajchavan/spring-jdbc/b
   public T mapRow(ResultSet rs, int rowNumber)throws SQLException  
   ```
 
-  Further explaination with example - [click here](https://www.tutorialspoint.com/springjdbc/springjdbc_rowmapper.htm)
-
-  Example 1 : Fetching all the records using query()
+  **Example 1 : Fetching all the records using query()**
   ```JAVA
    @Override
     public List<Student> getAllStudents() {
@@ -128,7 +126,7 @@ StudentDAOImpl code - [Click here](https://github.com/neerajchavan/spring-jdbc/b
     }
   ```
 
-  Example 2 : Fetching a unique record using queryForObject()
+  **Example 2 : Fetching a unique record using queryForObject()**
   ```JAVA
   @Override
     public Student findStudentByRollNo(int rollNumber) {
@@ -137,6 +135,27 @@ StudentDAOImpl code - [Click here](https://github.com/neerajchavan/spring-jdbc/b
         return student;
     }
   ```
+
+  **Implementation of `StudentRowMapper`**
+  ```JAVA
+  public class StudentRowMapper implements RowMapper<Student> {
+
+    //This function will be called for each entry in the DB and returns one record at a time
+    @Override
+    public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Student newStudent = new Student();
+        newStudent.setRollNo(rs.getInt("roll_no"));
+        newStudent.setName(rs.getString("student_name"));
+        newStudent.setAddress(rs.getString("student_address"));
+        
+        System.out.println("Inside mapRow() of RowMapper...");
+        
+        return newStudent;
+    }
+    
+}
+  ```
+   **Further explaination with example - [click here](https://www.tutorialspoint.com/springjdbc/springjdbc_rowmapper.htm)**
 
 # BeanPropertyRowMapper
 
@@ -150,9 +169,9 @@ The following changes needs to be made in `beans.xml`. In `dataSource` Bean chan
 <constructor-arg name="url" value="jdbc:mysql://127.0.0.1:3306/spring_jdbc_school?allowPublicKeyRetrieval=true&amp;useSSL=FALSE"/>
 ```
 
-**To use `BeanPropertyRowMapper`, we must set column names of the table same as property names of the Class.**
+To use `BeanPropertyRowMapper`, we must set column names of the table same as property names of the Class.
 
-Example -
+**Example**
 ```Java
 @Override
     public List<Student> getAllStudentsBeanPropertyRowMapper() {
@@ -162,6 +181,59 @@ Example -
         return studentList;
     }
 ```
+
+# ResultSetExtractor Interface
+
+The `ResultSetExtractor` interface can be used to fetch records from the database. It accepts a `ResultSet` as a method argument and returns the `List`. Implementation of this interface perform the actual work of extracting results from a `ResultSet`, but you don’t need to worry about exception handling.
+
+SQL Exceptions will be caught and handled by the calling `JdbcTemplate`. This interface is mainly used within the JDBC framework itself. 
+
+
+## Method of RowMapper interface
+  It defines only one method extractData that accepts ResultSet instance as a parameter. Syntax of the method is given below:
+
+  ```Java
+  public T extractData(ResultSet rs)throws SQLException,DataAccessException  
+  ```
+
+**Example : Fetching records by name using query()**
+
+```Java
+@Override
+    public List<Student> findStudentsByName(String name) {
+        String sql = "select * from Student where student_name = ?";
+        List<Student> studentList = jdbcTemplate.query(sql, new StudentResultSetExtractor(), name);
+        return studentList;
+    }
+```
+**Implementation of `StudentResultSetExtractor`**
+```Java
+public class StudentResultSetExtractor implements ResultSetExtractor<List<Student>> {
+
+    // This method is called only once, it returns all the entries present in the DB and return List of data
+    @Override
+    public List<Student> extractData(ResultSet rs) throws SQLException, DataAccessException {
+        List<Student> studentList = new ArrayList<Student>();
+        
+        while(rs.next()){
+        Student student = new Student();
+        student.setRollNo(rs.getInt("roll_no"));
+        student.setName(rs.getString("student_name"));
+        student.setAddress(rs.getString("student_address"));
+
+        studentList.add(student);
+        }
+        
+        System.out.println("Inside extractData() of ResultSetExtractor...");
+
+        return studentList;
+    }
+    
+}
+```
+
+**Further explaination with example - [click here](https://www.tutorialspoint.com/springjdbc/springjdbc_resultsetextractor.htm)**
+
 
 
 

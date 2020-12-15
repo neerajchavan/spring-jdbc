@@ -12,14 +12,17 @@ public class Test {
         StudentDAOHelper studentHelper =  context.getBean("studentDAOHelper", StudentDAOHelper.class);
         StudentDAOImpl studentDAO = (StudentDAOImpl) context.getBean("studentDAOImpl");
 
-        //Fetching all the records
+        //Fetching all the records : RowMapper example
         //studentHelper.printStudents(studentDAO.getAllStudents());
 
-        //Fetching all records by using BeanPropertyRowMapper
+        //Fetching all the records : BeanPropertyRowMapper example
         studentHelper.printStudents(studentDAO.getAllStudentsBeanPropertyRowMapper());
 
-        //Fetching record by roll no
+        //Fetching record by roll no : RowMapper example
         // Student student = studentDAO.findStudentByRollNo(5);
         // System.out.println("Fetched student data : " + student);
+
+        // Find students by name : ResultSetExtractor example
+        studentHelper.printStudents(studentDAO.findStudentsByName("Neeraj"));
     }
 }

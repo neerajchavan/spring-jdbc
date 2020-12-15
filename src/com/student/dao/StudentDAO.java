@@ -18,4 +18,6 @@ public interface StudentDAO {
     Student findStudentByRollNo(int rollNumber);
 
     List<Student> getAllStudentsBeanPropertyRowMapper();
+
+    List<Student> findStudentsByName(String name);
 }
