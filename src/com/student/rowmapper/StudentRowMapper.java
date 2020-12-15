@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 public class StudentRowMapper implements RowMapper<Student> {
 
+    //This function will be called for each entry in the DB and returns one record at a time
     @Override
     public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
         Student newStudent = new Student();
@@ -16,7 +17,7 @@ public class StudentRowMapper implements RowMapper<Student> {
         newStudent.setName(rs.getString("student_name"));
         newStudent.setAddress(rs.getString("student_address"));
         
-        System.out.println("mapRow() method called...");
+        System.out.println("Inside mapRow() of RowMapper...");
         
         return newStudent;
     }
