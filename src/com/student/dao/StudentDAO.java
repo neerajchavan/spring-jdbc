@@ -14,4 +14,8 @@ public interface StudentDAO {
     int deleteStudentByNameAndAddress(String name, String address);
 
     List<Student> getAllStudents();
+
+    Student findStudentByRollNo(int rollNumber);
+
+    List<Student> getAllStudentsBeanPropertyRowMapper();
 }

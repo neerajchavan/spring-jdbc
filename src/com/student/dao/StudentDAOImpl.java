@@ -7,6 +7,7 @@ import com.student.pojo.Student;
 import com.student.rowmapper.StudentRowMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -68,10 +69,28 @@ public class StudentDAOImpl implements StudentDAO {
         return noOfRowsDeleted;
     }
 
+    // This method returns all the students from DB
     @Override
     public List<Student> getAllStudents() {
         String sql = "select * from Student";
         List<Student> studentList = jdbcTemplate.query(sql, new StudentRowMapper());
+        return studentList;
+    }
+
+    // This method finds students by their roll number
+    @Override
+    public Student findStudentByRollNo(int rollNumber) {
+        String sql = "select * from Student where roll_no=?";
+        Student student = jdbcTemplate.queryForObject(sql, new StudentRowMapper(), rollNumber);
+        return student;
+    }
+
+    @Override
+    public List<Student> getAllStudentsBeanPropertyRowMapper() {
+        System.out.println("Inside BeanPropertyRowMapper : ");
+        String sql = "select roll_no as rollNo, student_name as name, student_address as address FROM Student";
+
+        List<Student> studentList = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Student>(Student.class));
         return studentList;
     }
 
