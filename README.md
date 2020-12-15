@@ -189,7 +189,7 @@ The `ResultSetExtractor` interface can be used to fetch records from the databas
 SQL Exceptions will be caught and handled by the calling `JdbcTemplate`. This interface is mainly used within the JDBC framework itself. 
 
 
-## Method of RowMapper interface
+## Method of ResultSetExtractor interface
   It defines only one method extractData that accepts ResultSet instance as a parameter. Syntax of the method is given below:
 
   ```Java

@@ -1,6 +1,7 @@
 package com.student.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.student.pojo.Student;
 
@@ -20,4 +21,6 @@ public interface StudentDAO {
     List<Student> getAllStudentsBeanPropertyRowMapper();
 
     List<Student> findStudentsByName(String name);
+
+    Map<String, List<String> > studentNameAddressMapping();
 }

@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.Map;
+
 import com.student.dao.StudentDAOImpl;
 import com.student.pojo.Student;
 import com.student.service.StudentDAOHelper;
@@ -23,6 +26,10 @@ public class Test {
         // System.out.println("Fetched student data : " + student);
 
         // Find students by name : ResultSetExtractor example
-        studentHelper.printStudents(studentDAO.findStudentsByName("Neeraj"));
+        //studentHelper.printStudents(studentDAO.findStudentsByName("Neeraj"));
+        
+        //checking map assignmnet
+        Map<String, List<String>> nameAdressMap = studentDAO.studentNameAddressMapping();
+        System.out.println("Mapping : " + nameAdressMap);
     }
 }

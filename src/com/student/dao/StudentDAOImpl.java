@@ -1,9 +1,12 @@
 package com.student.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.student.pojo.Student;
+import com.student.resultsetextractor.StudentNameAddressMapper;
 import com.student.resultsetextractor.StudentResultSetExtractor;
 import com.student.rowmapper.StudentRowMapper;
 
@@ -100,6 +103,13 @@ public class StudentDAOImpl implements StudentDAO {
         String sql = "select * from Student where student_name = ?";
         List<Student> studentList = jdbcTemplate.query(sql, new StudentResultSetExtractor(), name);
         return studentList;
+    }
+
+    @Override
+    public Map<String, List<String>> studentNameAddressMapping() {
+        String sql = "select * from Student";
+        Map<String, List<String>> map = jdbcTemplate.query(sql, new StudentNameAddressMapper());
+        return map;
     }
 
     

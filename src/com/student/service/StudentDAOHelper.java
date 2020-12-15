@@ -2,6 +2,8 @@ package com.student.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import com.student.dao.StudentDAO;
 import com.student.pojo.Student;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,13 @@ public class StudentDAOHelper {
     public void printStudents(List<Student> students){
         for(Student tempStudent : students){
             System.out.println(tempStudent);
+        }
+    }
+
+    public void printNameAddressMap(Map<String, List<String>> map){
+        for(Map.Entry tempMap : map.entrySet()){
+            String address = (String)tempMap.getKey();
+            System.out.println("Key "+address);
         }
     }
 
